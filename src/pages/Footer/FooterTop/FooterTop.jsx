@@ -36,21 +36,21 @@ const FooterTop = () => {
                     <ul className="follow-links">
                         <li>
                             <a className="follow-links-logo" href="#">
-                                <GithubOutlined style={{ color: '#d4d4d5', fontSize: "20px" }} />
+                                <GithubOutlined style={{ color: '#434343', fontSize: "20px" }} />
                             </a>
                         </li>
                         <li>
                             <a className='follow-links-logo' href="#">
-                                <TwitterOutlined style={{ color: '#d4d4d5', fontSize: "20px" }} />
+                                <TwitterOutlined style={{ color: '#434343', fontSize: "20px" }} />
                             </a>
                         </li>
 
                         <li><a className='follow-links-logo' href="#">
-                            <FacebookOutlined style={{ color: '#d4d4d5', fontSize: "20px" }} />
+                            <FacebookOutlined style={{ color: '#434343', fontSize: "20px" }} />
                         </a></li>
 
                         <li><a className='follow-links-logo' href="#">
-                            <InstagramOutlined style={{ color: '#d4d4d5', fontSize: "20px" }} />
+                            <InstagramOutlined style={{ color: '#434343', fontSize: "20px" }} />
                         </a></li>
                     </ul>
                 </div>
