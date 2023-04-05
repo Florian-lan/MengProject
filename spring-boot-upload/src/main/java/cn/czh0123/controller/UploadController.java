@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin
 public class UploadController {
 
     @PostMapping("/upload")
