@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 
 @RestController
 @RequestMapping
+@CrossOrigin
 public class ImageController {
     @GetMapping(value = "/image",produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
