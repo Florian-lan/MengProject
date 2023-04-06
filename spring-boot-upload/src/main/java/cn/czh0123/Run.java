@@ -1,6 +1,7 @@
 package cn.czh0123;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Run {
@@ -8,4 +9,3 @@ public class Run {
         SpringApplication.run(Run.class, args);
     }
 }
-java

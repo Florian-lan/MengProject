@@ -39,24 +39,34 @@ const UploadImg = () => {
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
     }
-    const handleUpload = async function ({ file, fileList }) {
+    const handleUpload = function (options) {
+        const { file, onSuccess, onError } = options;
+        if (!beforeUpload) return;
         setLoading(true);
-
+        console.log(file)
         // 创建 FormData 对象，用于发送图片数据
         const formData = new FormData();
-        fileList?.forEach((file) => {
-            formData.append('files[]', file);
-        });
+        formData.append('image', file);
+        console.log(formData.get('image'))
+        // fileList?.forEach((file) => {
+
+        //     formData.append('files[]', file);
+        // });
 
         try {
             // send the image to server to process
-            const response = await axios.post({ UPLOAD_URL }, formData, {
+            axios.post({ UPLOAD_URL }, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            const imageUrls = response.data;
-
-            // TODO process imgs response by server
-            setImageUrl(imageUrls);
+            }).then(response => {
+                onSuccess(response, file);
+            })
+                .catch(error => {
+                    onError(error);
+                });
+            // const imageUrls = response.data;
+            // console.log(response);
+            // // TODO process imgs response by server
+            // setImageUrl(imageUrls);
         } catch (error) {
             message.error('上传图片失败，请重试!');
         } finally {
@@ -80,23 +90,25 @@ const UploadImg = () => {
     const handleChange = (info) => {
 
         const { file, fileList } = info;
-        console.log("onChange", fileList)
-        const { status, response } = file;
-        console.log(response);
-        if (status === 'done') {
-            // 文件上传成功，可以从 response 中获取服务器端响应的数据
-            console.log('服务器端响应数据：', response);
-            setLoading(false);
-            // 进行处理响应数据的逻辑
-            const imageUrls = response.data;
+        // console.log("onChange", fileList)
+        // const { status, response } = file;
+        // console.log(response);
+        // if (status === 'done') {
+        //     // 文件上传成功，可以从 response 中获取服务器端响应的数据
+        //     console.log('服务器端响应数据：', response);
+        //     setLoading(false);
+        //     // 进行处理响应数据的逻辑
+        //     const imageUrls = response.data;
 
-            // TODO process imgs response by server
-            setImageUrl(imageUrls);
-        } else if (status === 'error') {
-            // 文件上传失败，可以从 info.fileList 中获取错误信息
-            console.log('上传失败：', info.fileList);
-            // 进行错误处理的逻辑
-        }
+        //     // TODO process imgs response by server
+        //     setImageUrl(imageUrls);
+        // } else if (status === 'error') {
+        //     // 文件上传失败，可以从 info.fileList 中获取错误信息
+        //     console.log('上传失败：', fileList);
+        //     // 进行错误处理的逻辑
+        // }
+        setFileList(fileList)
+
     };
     const handleRemove = function (file) {
         const index = fileList.indexOf(file);
@@ -131,16 +143,20 @@ const UploadImg = () => {
             <ImgCrop rotationSlider>
                 <Upload
                     name='uploadFile'
-                    action={UPLOAD_URL}
+                    // action={UPLOAD_URL}
                     // multiple={true}
                     // ref={uploadRef}
                     listType="picture-card"
                     fileList={fileList}
                     onRemove={handleRemove}
-                    beforeUpload={beforeUpload}
+                    // beforeUpload={(file) => {
+                    //     // console.log(file);
+                    //     // handleUpload(file);
+                    //     return false; // stop default upload event
+                    // }}
                     onChange={handleChange}
                     onPreview={onPreview}
-                // customRequest={handleUpload}
+                    customRequest={handleUpload}
                 >
                     {fileList.length < 5 && '+ Upload'}
                 </Upload>
@@ -163,8 +179,8 @@ const UploadImg = () => {
                     ))}
                 </div>
             )}
-            <Button 
-            onClick = {handleTest}>
+            <Button
+                onClick={handleTest}>
                 test
             </Button>
 
