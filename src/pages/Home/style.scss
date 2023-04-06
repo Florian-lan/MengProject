@@ -1,6 +1,10 @@
 .home{
     display: flex;
+    flex-direction: column;
+    padding: 10px 150px;
     .content{
-        
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 }

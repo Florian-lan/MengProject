@@ -39,7 +39,7 @@ const UploadImg = () => {
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
     }
-    const handleUpload = function (options) {
+    const handleCustomRequest = function (options) {
         const { file, onSuccess, onError } = options;
         if (!beforeUpload) return;
         setLoading(true);
@@ -52,17 +52,17 @@ const UploadImg = () => {
 
         //     formData.append('files[]', file);
         // });
-
         try {
             // send the image to server to process
             axios.post({ UPLOAD_URL }, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }).then(response => {
+                console.log(response);
                 onSuccess(response, file);
             })
-                .catch(error => {
+            .catch(error => {
                     onError(error);
-                });
+            });
             // const imageUrls = response.data;
             // console.log(response);
             // // TODO process imgs response by server
@@ -156,7 +156,7 @@ const UploadImg = () => {
                     // }}
                     onChange={handleChange}
                     onPreview={onPreview}
-                    customRequest={handleUpload}
+                    customRequest={handleCustomRequest}
                 >
                     {fileList.length < 5 && '+ Upload'}
                 </Upload>
