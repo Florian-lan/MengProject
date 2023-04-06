@@ -1,6 +1,7 @@
 package cn.czh0123.controller;
 
 import org.springframework.boot.system.ApplicationHome;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class UploadController {
         if (file.isEmpty()) {
             return "图片上传失败";
         }
+
         //file重命名 (a: 1.png   b:1.png)
         String originalFilename = file.getOriginalFilename(); //原来的图片名
         String ext = "." + originalFilename.split("\\.")[1]; // 1.png

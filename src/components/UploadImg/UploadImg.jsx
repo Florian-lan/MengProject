@@ -81,7 +81,8 @@ const UploadImg = () => {
 
         const { file, fileList } = info;
         console.log("onChange", fileList)
-        const { status, response } = info.file;
+        const { status, response } = file;
+        console.log(response);
         if (status === 'done') {
             // 文件上传成功，可以从 response 中获取服务器端响应的数据
             console.log('服务器端响应数据：', response);
@@ -102,8 +103,8 @@ const UploadImg = () => {
         const newFileList = fileList.slice();
         newFileList.splice(index, 1);
         setFileList(newFileList);
-
     }
+
     const handleUploadClick = function () {
         // 调用 Upload 组件的 upload 方法，触发上传操作
         const uploadInstance = uploadRef.current;
@@ -112,7 +113,17 @@ const UploadImg = () => {
             setLoading(true)
         }
     }
-
+    const handleTest = function () {
+        const data = 'hello world';
+        axios.post('http://localhost:8080/test', data)
+            .then(response => {
+                // 处理响应结果
+                console.log(response)
+            })
+            .catch(error => {
+                // 处理错误
+            });
+    }
 
     return (
         <>
@@ -152,6 +163,10 @@ const UploadImg = () => {
                     ))}
                 </div>
             )}
+            <Button 
+            onClick = {handleTest}>
+                test
+            </Button>
 
 
         </>
