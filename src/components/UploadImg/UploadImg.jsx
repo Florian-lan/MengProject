@@ -54,7 +54,8 @@ const UploadImg = () => {
         // });
         try {
             // send the image to server to process
-            axios.post({ UPLOAD_URL }, formData, {
+            console.log(UPLOAD_URL)
+            axios.post(UPLOAD_URL, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }).then(response => {
                 console.log(response);
@@ -127,7 +128,7 @@ const UploadImg = () => {
     }
     const handleTest = function () {
         const data = 'hello world';
-        axios.post('http://localhost:8080/test', data)
+        axios.post('http://localhost:8080/upload', data)
             .then(response => {
                 // 处理响应结果
                 console.log(response)
