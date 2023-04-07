@@ -29,6 +29,7 @@ public class UploadController {
         // 上传图片
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
         String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath();
+        System.out.println(pre);
         
         System.out.println(originalFilename);
         String path = pre + "test1.jpeg";
@@ -40,7 +41,8 @@ public class UploadController {
 
 
         //执行python文件
-        String command = "python3 " + pre + "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
+        // String command = "python3 " + pre + "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
+        String command = "/opt/anaconda3/bin/python " + pre + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
         System.out.println(command);
         // String command = "pwd";
         
