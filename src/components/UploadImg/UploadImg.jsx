@@ -3,6 +3,7 @@ import "./style.scss";
 import { InboxOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
@@ -19,7 +20,9 @@ const UploadImg = () => {
     const [fileList, setFileList] = useState([]);
     const [imageUrl, setImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
+    const [imageDataList, setImageDataList] = useState([]);
     const { Dragger } = Upload;
+    const navigate = useNavigate();
 
     // Server API #TODO
     const SERVER_URL = 'http://localhost:8080'
@@ -54,16 +57,17 @@ const UploadImg = () => {
         // });
         try {
             // send the image to server to process
-            console.log(UPLOAD_URL)
             axios.post(UPLOAD_URL, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             }).then(response => {
                 console.log(response);
+                processImgsFromServer(response);
+
                 onSuccess(response, file);
             })
-            .catch(error => {
+                .catch(error => {
                     onError(error);
-            });
+                });
             // const imageUrls = response.data;
             // console.log(response);
             // // TODO process imgs response by server
@@ -125,6 +129,8 @@ const UploadImg = () => {
             uploadInstance.upload();
             setLoading(true)
         }
+        navigate('/result');
+
     }
     const handleTest = function () {
         const data = 'hello world';
@@ -136,6 +142,16 @@ const UploadImg = () => {
             .catch(error => {
                 // 处理错误
             });
+    }
+    const processImgsFromServer = function (response) {
+        const dataList = response.data.map(data => {
+            const base64 = btoa(
+                new Uint8Array(data)
+                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
+            );
+            return `data:image/png;base64,${base64}`;
+        });
+        setImageDataList(dataList);
     }
 
     return (
@@ -184,6 +200,11 @@ const UploadImg = () => {
                 onClick={handleTest}>
                 test
             </Button>
+            <div>
+                {imageDataList.map((imageData, index) => (
+                    <img key={index} src={imageData} alt={`image${index}`} />
+                ))}
+            </div>
 
 
         </>
