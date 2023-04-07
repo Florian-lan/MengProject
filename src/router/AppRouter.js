@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 // import NotFound from '../pages/NotFound/NotFound'
 import Home from '../pages/Home/Home'
+import Result from '../pages/Result/Result'
 // import Login from '../pages/Login/Login'
 // import MovieStore from '../pages/MovieStore/MovieStore'
 // import Details from '../pages/Details/Details'
@@ -19,7 +20,7 @@ const AppRouter = () => {
             <Routes>
                 <Route path='/' element={id? <Navigate to='/home'/>:<Navigate to='/login'/>}/>
                 <Route path='/home' element={<Home/>}/>
-                {/* <Route path='/login' element={<Login/>}/> */}
+                <Route path='/result' element={<Result/>}/>
                 {/* <Route path='/register' element={<Register/>}/> */}
                 {/* <Route path='/store' element={<MovieStore/>}/> */}
                 {/* <Route path='/personal' element={<Personal/>}/>
