@@ -32,7 +32,7 @@ public class UploadController {
         System.out.println(pre);
         
         System.out.println(originalFilename);
-        String path = pre + "test1.jpeg";
+        String path = pre + "/src/main/resources/static/images/test1.jpeg";
         try {
             file.transferTo(new File(path));
         } catch (IOException e) {
