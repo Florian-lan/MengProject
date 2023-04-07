@@ -38,11 +38,10 @@ public class ImageController {
         String filePath = pre + "/src/main/resources/static/images/test1.jpeg";
         
         File file = new File(filePath);
-        FileInputStream inputStream = new FileInputStream(file);
-        byte[] bytes = new byte[inputStream.available()];
-
-
-        return ResponseEntity.ok(bytes);
+        try (FileInputStream inputStream = new FileInputStream(file)) {
+            byte[] bytes = new byte[inputStream.available()];
+            return ResponseEntity.ok(bytes);
+        }
     }
 
 
