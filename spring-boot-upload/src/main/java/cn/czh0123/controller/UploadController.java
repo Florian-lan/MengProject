@@ -15,30 +15,28 @@ public class UploadController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> upload(@RequestParam("image") MultipartFile file) {
-        //file校验
-        if (file.isEmpty()) {
-//            return "图片上传失败";
+         if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No file chosen");
         }
-
 
         //file重命名 (a: 1.png   b:1.png)
         String originalFilename = file.getOriginalFilename(); //原来的图片名
+
+        // 上传图片
+        ApplicationHome applicationHome = new ApplicationHome(this.getClass());
+        String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath() +
+                "/src/main/resources/static/images/"; 
+        
+        System.out.println(originalFilename);
+        String path = pre + "test1.jpeg";
+        try {
+            file.transferTo(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        
         return ResponseEntity.ok(originalFilename);
-//        String ext = "." + originalFilename.split("\\.")[1]; // 1.png
-//        String uuid = UUID.randomUUID().toString().replace("-", "");
-//        String fileName = uuid + ext;
-//        //上传图片
-//        ApplicationHome applicationHome = new ApplicationHome(this.getClass());
-//        String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath() +
-//                "/src/main/resources/static/images/"; //    /
-//        String path = pre + fileName;
-//        try {
-//            file.transferTo(new File(path));
-//            return path;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return "图片上传失败";
     }
 
 //    @GetMapping
