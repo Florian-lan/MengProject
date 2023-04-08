@@ -1,11 +1,13 @@
 package cn.czh0123.controller;
 
 import org.springframework.boot.system.ApplicationHome;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.aliyun.oss.common.utils.HttpHeaders;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import com.aliyun.oss.common.utils.HttpUtil;
 
 import java.io.File;
@@ -13,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 
 @RestController
 @RequestMapping
@@ -28,7 +31,11 @@ public class ImageController {
     //     return bytes;
     // }
 
-    @GetMapping("/image")
+    /**
+     * @return
+     * @throws IOException
+     */
+    @GetMapping(value = "/image", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImg() throws IOException {
 
         // 上传图片
@@ -38,11 +45,54 @@ public class ImageController {
         String filePath = pre + "/src/main/resources/static/images/test1.jpeg";
         
         File file = new File(filePath);
-        try (FileInputStream inputStream = new FileInputStream(file)) {
-            byte[] bytes = new byte[inputStream.available()];
-            return ResponseEntity.ok(bytes);
+        if (!file.exists()) {
+            throw new FileNotFoundException("Image not found");
         }
+        byte[] imageBytes = Files.readAllBytes(file.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentLength(imageBytes.length);
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
+    
+    /* 
+    提供一个可行的React读取 参考
+    * function App() {
+    * const [imageSrc, setImageSrc] = useState(null);
+    * 
+    * useEffect(() => {
+    * fetch('image')
+    * .then((response) => response.blob())
+    * .then((blob) => {
+    * const objectUrl = URL.createObjectURL(blob);
+    * setImageSrc(objectUrl);
+    * })
+    * .catch((error) => {
+    * console.error(error);
+    * });
+    * }, []);
+    * 
+    * return (
+    * <img src={imageSrc} />
+    * );
+    * }
+    * 
+    * export default App;
+    */
 
+    // 可以成功显示 可以将上面注释 然后修改这里的 imagePath 进行测试
+    // @GetMapping(value = "/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    // public ResponseEntity<byte[]> getImage() throws IOException {
+    //     String imagePath = "/Users/ndsjr/Documents/GitHub/MengProject/spring-boot-upload/src/main/resources/static/images/test1.jpeg";
+    //     File file = new File(imagePath);
+    //     if (!file.exists()) {
+    //         throw new FileNotFoundException("Image not found: ");
+    //     }
+    //     byte[] imageBytes = Files.readAllBytes(file.toPath());
+    //     HttpHeaders headers = new HttpHeaders();
+    //     headers.setContentType(MediaType.IMAGE_JPEG);
+    //     headers.setContentLength(imageBytes.length);
+    //     return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    // }
 }
 
