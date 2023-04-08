@@ -42,6 +42,7 @@ const UploadImg = () => {
         const imgWindow = window.open(src);
         imgWindow?.document.write(image.outerHTML);
     }
+
     const handleCustomRequest = function (options) {
         const { file, onSuccess, onError } = options;
         if (!beforeUpload) return;
@@ -59,15 +60,16 @@ const UploadImg = () => {
             // send the image to server to process
             axios.post(UPLOAD_URL, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
-            }).then(response => {
+            })
+            .then(response => {
                 console.log(response);
-                processImgsFromServer(response);
-
+                // processImgsFromServer(response);
+                console.log(onSuccess);
                 onSuccess(response, file);
             })
-                .catch(error => {
-                    onError(error);
-                });
+            .catch(error => {
+                onError(error);
+            });
             // const imageUrls = response.data;
             // console.log(response);
             // // TODO process imgs response by server
@@ -144,6 +146,7 @@ const UploadImg = () => {
             });
     }
     const processImgsFromServer = function (response) {
+
         const dataList = response.data.map(data => {
             const base64 = btoa(
                 new Uint8Array(data)
@@ -175,9 +178,8 @@ const UploadImg = () => {
                     onPreview={onPreview}
                     customRequest={handleCustomRequest}
                 >
-                    {fileList.length < 5 && '+ Upload'}
+                    {fileList.length < 1 && '+ Upload'}
                 </Upload>
-
             </ImgCrop>
             <Button
                 type="primary"
