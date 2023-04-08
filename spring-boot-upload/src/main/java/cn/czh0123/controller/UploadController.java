@@ -30,7 +30,71 @@ import java.io.InputStreamReader;
 @CrossOrigin
 public class UploadController {
 
+<<<<<<< HEAD
     // 单张 可行
+=======
+    // 单张
+    @PostMapping(value = "/upload", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> upload(@RequestParam("image") MultipartFile file) throws IOException {
+        //file校验
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        //file重命名 (a: 1.png   b:1.png)
+        String originalFilename = file.getOriginalFilename(); //原来的图片名
+
+        // 上传图片
+        ApplicationHome applicationHome = new ApplicationHome(this.getClass());
+        String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath();
+        System.out.println(pre);
+
+        System.out.println(originalFilename);
+        String path = pre + "/src/main/resources/static/images/test1.jpeg";
+        try {
+            file.transferTo(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+<<<<<<< HEAD
+
+        //执行python文件
+        // String command = "python3 " + pre + "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
+        String command = "/opt/anaconda3/bin/python " + pre + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
+        System.out.println(command);
+
+        Process process = Runtime.getRuntime().exec(command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        ArrayList<String> arrayString = new ArrayList<>();
+        while ((line = reader.readLine()) != null) {
+            arrayString.add(line);
+            System.out.println(line);
+        }
+
+        System.out.println("=======================");
+        // String classification = arrayString.get(3);
+        
+
+        // 返回处理后的图片 单张
+        // pre output ====== /Users/ndsjr/Documents/GitHub/MengProject/spring-boot-upload
+        String filePath = pre + "/src/main/resources/static/images/test1.jpeg";
+
+        File newFile = new File(filePath);
+        if (!newFile.exists()) {
+            throw new FileNotFoundException("Image not found");
+        }
+        byte[] imageBytes = Files.readAllBytes(newFile.toPath());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.setContentLength(imageBytes.length);
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+    }
+
+
+    // // 多张
+>>>>>>> c537168 (TODO)
     // @PostMapping(value = "/upload", produces = MediaType.IMAGE_JPEG_VALUE)
     // public ResponseEntity<byte[]> upload(@RequestParam("image") MultipartFile file) throws IOException {
     //     //file校验
@@ -87,6 +151,7 @@ public class UploadController {
     //     headers.setContentLength(imageBytes.length);
     //     return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     // }
+<<<<<<< HEAD
 
 
     // 多张
@@ -181,4 +246,9 @@ public class UploadController {
 
         return new ResponseEntity<>(zipBytes, headers, HttpStatus.OK);
     }
+=======
+=======
+
+>>>>>>> 5d0f73e (TODO)
+>>>>>>> c537168 (TODO)
 }

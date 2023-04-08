@@ -4,6 +4,8 @@ import { InboxOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch} from "react-redux";
+import { setImageList } from "../../store/imageStore/action";
 
 import axios from 'axios';
 
@@ -23,6 +25,10 @@ const UploadImg = () => {
     const [imageDataList, setImageDataList] = useState([]);
     const { Dragger } = Upload;
     const navigate = useNavigate();
+    const imageList = useSelector(state=>{
+        console.log(state.ImageList);
+    })
+    const dispatch = useDispatch();
 
     // Server API #TODO
     const SERVER_URL = 'http://localhost:8080'
@@ -59,14 +65,25 @@ const UploadImg = () => {
         try {
             // send the image to server to process
             axios.post(UPLOAD_URL, formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: { 'Content-Type': 'multipart/form-data' },
+                responseType: 'blob',
             })
             .then(response => {
                 console.log(response);
                 // processImgsFromServer(response);
-                console.log(onSuccess);
+                const objectUrl = URL.createObjectURL(response.data);
+                imageDataList.push(objectUrl);
+                setImageDataList(imageDataList);
+                console.log(imageDataList);
                 onSuccess(response, file);
+                
+                // return response.blob();
             })
+            // .then(blob => {
+            //     const objectUrl = URL.createObjectURL(blob);
+            //     console.log(objectUrl);
+            //     // 
+            // })
             .catch(error => {
                 onError(error);
             });
@@ -136,14 +153,17 @@ const UploadImg = () => {
     }
     const handleTest = function () {
         const data = 'hello world';
-        axios.post('http://localhost:8080/upload', data)
-            .then(response => {
-                // 处理响应结果
-                console.log(response)
-            })
-            .catch(error => {
-                // 处理错误
-            });
+        // axios.post('http://localhost:8080/upload', data)
+        //     .then(response => {
+        //         // 处理响应结果
+        //         console.log(response)
+        //     })
+        //     .catch(error => {
+        //         // 处理错误
+        //     });
+
+        dispatch(setImageList([1,2,3]))
+        
     }
     const processImgsFromServer = function (response) {
 
