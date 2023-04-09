@@ -4,8 +4,10 @@ import { InboxOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setImageList } from "../../store/imageStore/action";
+import JSZip from 'jszip';
+import pako from 'pako';
 
 import axios from 'axios';
 
@@ -25,7 +27,7 @@ const UploadImg = () => {
     const [imageDataList, setImageDataList] = useState([]);
     const { Dragger } = Upload;
     const navigate = useNavigate();
-    const imageList = useSelector(state=>{
+    const imageList = useSelector(state => {
         console.log(state.ImageList);
     })
     const dispatch = useDispatch();
@@ -68,25 +70,25 @@ const UploadImg = () => {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 responseType: 'blob',
             })
-            .then(response => {
-                console.log(response);
-                // processImgsFromServer(response);
-                const objectUrl = URL.createObjectURL(response.data);
-                imageDataList.push(objectUrl);
-                setImageDataList(imageDataList);
-                console.log(imageDataList);
-                onSuccess(response, file);
-                
-                // return response.blob();
-            })
-            // .then(blob => {
-            //     const objectUrl = URL.createObjectURL(blob);
-            //     console.log(objectUrl);
-            //     // 
-            // })
-            .catch(error => {
-                onError(error);
-            });
+                .then(response => {
+                    console.log(response);
+                    processImgsFromServer(response);
+                    // const objectUrl = URL.createObjectURL(response.data);
+                    // imageDataList.push(objectUrl);
+                    // setImageDataList(imageDataList);
+                    // console.log(imageDataList);
+                    onSuccess(response, file);
+
+                    // return response.blob();
+                })
+                // .then(blob => {
+                //     const objectUrl = URL.createObjectURL(blob);
+                //     console.log(objectUrl);
+                //     // 
+                // })
+                .catch(error => {
+                    onError(error);
+                });
             // const imageUrls = response.data;
             // console.log(response);
             // // TODO process imgs response by server
@@ -162,19 +164,66 @@ const UploadImg = () => {
         //         // 处理错误
         //     });
 
-        dispatch(setImageList([1,2,3]))
-        
-    }
-    const processImgsFromServer = function (response) {
+        dispatch(setImageList([1, 2, 3]))
 
-        const dataList = response.data.map(data => {
-            const base64 = btoa(
-                new Uint8Array(data)
-                    .reduce((data, byte) => data + String.fromCharCode(byte), '')
-            );
-            return `data:image/png;base64,${base64}`;
-        });
-        setImageDataList(dataList);
+    }
+    const processImgsFromServer = async function (response) {
+
+        const binaryData = response.data;
+        console.log(binaryData)
+        // 假设 binaryData 是 application/octet-stream 类型的数据
+        const zip = new JSZip();
+        try {
+            await zip.loadAsync(binaryData)
+                .then((zip) => {
+                    // 遍历压缩包中的文件
+                    zip.forEach((relativePath, file) => {
+                        console.log(`File ${relativePath}:`);
+                        // 读取文件内容
+                        console.log(file);
+                        let uint8Array = file._data.compressedContent;
+                        console.log(file._data.compressedContent);
+                        const imageData = new Uint8Array(uint8Array);
+                        // const imageData = uint8Array;
+                        // console.log(uint8Array)
+                        // const imageData = pako.ungzip(uint8Array);
+                        // 将二进制数据转换为 Blob 对象
+                        const blob = new Blob([imageData], { type: 'image/jpeg' });
+                        console.log(blob)
+                        // 将 Blob 对象转换为图片 URL
+                        const imageUrl = URL.createObjectURL(blob);
+                        console.log(imageUrl);
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        document.body.appendChild(img);
+                        // const objectUrl = URL.createObjectURL(file);
+                        imageDataList.push(imageUrl);
+                        // // setImageDataList(imageDataList);
+                        // console.log(imageDataList);
+                        // file.async('string').then((content) => {
+                        //     console.log(content);
+                        // });
+                    });
+                    console.log(imageDataList)
+                    setImageDataList(imageDataList);
+                });
+
+        } catch (error) {
+            console.error('An error occurred:', error);
+
+        }
+
+        console.log("test");
+        console.log(zip);
+        setImageDataList(imageDataList);
+        // const dataList = response.data.map(data => {
+        //     const base64 = btoa(
+        //         new Uint8Array(data)
+        //             .reduce((data, byte) => data + String.fromCharCode(byte), '')
+        //     );
+        //     return `data:image/png;base64,${base64}`;
+        // });
+
     }
 
     return (
@@ -222,12 +271,13 @@ const UploadImg = () => {
                 onClick={handleTest}>
                 test
             </Button>
+
             <div>
+                {imageDataList}
                 {imageDataList.map((imageData, index) => (
                     <img key={index} src={imageData} alt={`image${index}`} />
                 ))}
             </div>
-
 
         </>
 

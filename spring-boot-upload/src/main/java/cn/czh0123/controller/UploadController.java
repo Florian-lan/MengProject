@@ -112,24 +112,24 @@ public class UploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // 执行python文件
-        // String command = "python3 " + pre +
-        // "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
-        String command = "/opt/anaconda3/bin/python " + pre
-                + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
-        System.out.println(command);
-
-        Process process = Runtime.getRuntime().exec(command);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        ArrayList<String> arrayString = new ArrayList<>();
-        while ((line = reader.readLine()) != null) {
-            arrayString.add(line);
-            System.out.println(line);
-        }
-
-        System.out.println("=======================");
+//
+//        // 执行python文件
+//        // String command = "python3 " + pre +
+//        // "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
+//        String command = "/opt/anaconda3/bin/python " + pre
+//                + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
+//        System.out.println(command);
+//
+//        Process process = Runtime.getRuntime().exec(command);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//        String line;
+//        ArrayList<String> arrayString = new ArrayList<>();
+//        while ((line = reader.readLine()) != null) {
+//            arrayString.add(line);
+//            System.out.println(line);
+//        }
+//
+//        System.out.println("=======================");
         // String classification = arrayString.get(3);
 
         // 返回处理后的图片 多张

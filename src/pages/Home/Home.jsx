@@ -9,11 +9,12 @@ const Home = () => {
         <div className="home">
             <div className="content">
                 <div className="carousel">
-                    <Card/>
+                    <Card />
                 </div>
                 <div className="upload">
                     <UploadImg />
                 </div>
+               
 
             </div>
         </div>
