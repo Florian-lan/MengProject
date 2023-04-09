@@ -167,63 +167,87 @@ const UploadImg = () => {
         dispatch(setImageList([1, 2, 3]))
 
     }
-    const processImgsFromServer = async function (response) {
+    // const processImgsFromServer = async function (response) {
 
-        const binaryData = response.data;
-        console.log(binaryData)
-        // 假设 binaryData 是 application/octet-stream 类型的数据
-        const zip = new JSZip();
-        try {
-            await zip.loadAsync(binaryData)
-                .then((zip) => {
-                    // 遍历压缩包中的文件
-                    zip.forEach((relativePath, file) => {
-                        console.log(`File ${relativePath}:`);
-                        // 读取文件内容
-                        console.log(file);
-                        let uint8Array = file._data.compressedContent;
-                        console.log(file._data.compressedContent);
-                        const imageData = new Uint8Array(uint8Array);
-                        // const imageData = uint8Array;
-                        // console.log(uint8Array)
-                        // const imageData = pako.ungzip(uint8Array);
-                        // 将二进制数据转换为 Blob 对象
-                        const blob = new Blob([imageData], { type: 'image/jpeg' });
-                        console.log(blob)
-                        // 将 Blob 对象转换为图片 URL
-                        const imageUrl = URL.createObjectURL(blob);
-                        console.log(imageUrl);
-                        const img = document.createElement('img');
-                        img.src = imageUrl;
-                        document.body.appendChild(img);
-                        // const objectUrl = URL.createObjectURL(file);
-                        imageDataList.push(imageUrl);
-                        // // setImageDataList(imageDataList);
-                        // console.log(imageDataList);
-                        // file.async('string').then((content) => {
-                        //     console.log(content);
-                        // });
-                    });
-                    console.log(imageDataList)
-                    setImageDataList(imageDataList);
+    //     const binaryData = response.data;
+    //     console.log(binaryData)
+    //     // 假设 binaryData 是 application/octet-stream 类型的数据
+    //     const zip = new JSZip();
+    //     try {
+    //         await zip.loadAsync(binaryData)
+    //             .then((zip) => {
+    //                 // 遍历压缩包中的文件
+    //                 console.log(zip)
+    //                 zip.forEach((relativePath, file) => {
+    //                     console.log(`File ${relativePath}:`);
+    //                     // 读取文件内容
+    //                     console.log(file);
+    //                     let uint8Array = file._data.compressedContent;
+    //                     console.log(file._data.compressedContent);
+    //                     const imageData = new Uint8Array(uint8Array);
+    //                     // const imageData = uint8Array;
+    //                     // console.log(uint8Array);
+    //                     // const imageData = pako.ungzip(uint8Array);
+    //                     // 将二进制数据转换为 Blob 对象
+    //                     const blob = new Blob([imageData], { type: 'image/png' });
+    //                     console.log(blob)
+    //                     // 将 Blob 对象转换为图片 URL
+    //                     const imageUrl = URL.createObjectURL(blob);
+    //                     console.log(imageUrl);
+    //                     const img = document.createElement('img');
+    //                     img.src = imageUrl;
+    //                     document.body.appendChild(img);
+    //                     // const objectUrl = URL.createObjectURL(file);
+    //                     imageDataList.push(imageUrl);
+    //                     // // setImageDataList(imageDataList);
+    //                     // console.log(imageDataList);
+    //                     // file.async('string').then((content) => {
+    //                     //     console.log(content);
+    //                     // });
+    //                 });
+    //                 console.log(imageDataList)
+    //                 setImageDataList(imageDataList);
+    //             });
+
+    //     } catch (error) {
+    //         console.error('An error occurred:', error);
+
+    //     }
+
+    //     console.log("test");
+    //     console.log(zip);
+    //     setImageDataList(imageDataList);
+    //     // const dataList = response.data.map(data => {
+    //     //     const base64 = btoa(
+    //     //         new Uint8Array(data)
+    //     //             .reduce((data, byte) => data + String.fromCharCode(byte), '')
+    //     //     );
+    //     //     return `data:image/png;base64,${base64}`;
+    //     // });
+
+    // }
+    const processImgsFromServer = function (response) {
+        const zipData = response.data;
+        // 将 ZIP 文件的字节数组转换为 Blob 对象
+        const blob = new Blob([zipData], { type: 'application/zip' });
+
+        // 使用 JSZip 解压 ZIP 文件
+        JSZip.loadAsync(blob).then(zip => {
+            // 遍历 ZIP 文件中的所有文件
+            Object.keys(zip.files).forEach(filename => {
+                // 读取文件的二进制数据
+                zip.files[filename].async('uint8array').then(data => {
+                    // 将二进制数据转换为图片
+                    const blob = new Blob([data], { type: 'image/jpeg' });
+                    const url = URL.createObjectURL(blob);
+                    const image = new Image();
+                    image.src = url;
+
+                    // 将图片添加到页面中
+                    document.body.appendChild(image);
                 });
-
-        } catch (error) {
-            console.error('An error occurred:', error);
-
-        }
-
-        console.log("test");
-        console.log(zip);
-        setImageDataList(imageDataList);
-        // const dataList = response.data.map(data => {
-        //     const base64 = btoa(
-        //         new Uint8Array(data)
-        //             .reduce((data, byte) => data + String.fromCharCode(byte), '')
-        //     );
-        //     return `data:image/png;base64,${base64}`;
-        // });
-
+            });
+        });
     }
 
     return (
