@@ -4,15 +4,15 @@ import './style.scss';
 import { useSelector } from 'react-redux';
 
 const Result = () => {
-    const imageList = useSelector(state => {
-        console.log(state.ImageList);
-        return state.ImageList.imageList;
+    // const imageList = useSelector(state => {
+    //     console.log(state.ImageList);
+    //     return state.ImageList.imageList;
 
-    })
+    // })
     return (
         <>
             <div className="resBody">
-                {imageList}
+                {/* {imageList} */}
                 test
                 <ResBox />
 

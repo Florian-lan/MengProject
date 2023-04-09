@@ -11,10 +11,14 @@ const Home = () => {
                 <div className="carousel">
                     <Card />
                 </div>
+
                 <div className="upload">
+                    <p className="header">
+                        Upload an Image You Want to Identify:
+                    </p>
                     <UploadImg />
                 </div>
-               
+
 
             </div>
         </div>

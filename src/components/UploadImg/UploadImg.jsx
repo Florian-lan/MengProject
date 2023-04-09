@@ -29,6 +29,7 @@ const UploadImg = () => {
     const navigate = useNavigate();
     const imageList = useSelector(state => {
         console.log(state.ImageList);
+
     })
     const dispatch = useDispatch();
 
@@ -144,13 +145,20 @@ const UploadImg = () => {
     }
 
     const handleUploadClick = function () {
+
         // 调用 Upload 组件的 upload 方法，触发上传操作
-        const uploadInstance = uploadRef.current;
-        if (uploadInstance) {
-            uploadInstance.upload();
-            setLoading(true)
-        }
-        navigate('/result');
+
+        // const uploadInstance = uploadRef.current;
+        // if (uploadInstance) {
+        //     uploadInstance.upload();
+        //     setLoading(true)
+        // }
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            navigate('/result');
+        }, 2000)
+
 
     }
     const handleTest = function () {
@@ -230,6 +238,7 @@ const UploadImg = () => {
         const zipData = response.data;
         // 将 ZIP 文件的字节数组转换为 Blob 对象
         const blob = new Blob([zipData], { type: 'application/zip' });
+        const urls = [];
 
         // 使用 JSZip 解压 ZIP 文件
         JSZip.loadAsync(blob).then(zip => {
@@ -240,12 +249,18 @@ const UploadImg = () => {
                     // 将二进制数据转换为图片
                     const blob = new Blob([data], { type: 'image/jpeg' });
                     const url = URL.createObjectURL(blob);
-                    const image = new Image();
-                    image.src = url;
+                    urls.push(url);
+                    dispatch(setImageList([...urls]));
+                    // const image = new Image();
+                    // image.src = url;
 
-                    // 将图片添加到页面中
-                    document.body.appendChild(image);
+                    // // 将图片添加到页面中
+                    // document.body.appendChild(image);
+                    // setImageDataList(imageList);
+
                 });
+                // console.log(urls)
+                // dispatch(setImageList([...urls]));
             });
         });
     }
@@ -281,31 +296,16 @@ const UploadImg = () => {
                 loading={loading}
                 style={{ marginTop: 16 }}
             >
-                {loading ? 'Uploading' : 'Start Upload'}
+
+                {loading ? 'Processing...' : 'Process Image'}
             </Button>
-            {loading && <div>正在上传图片，请稍候...</div>}
-            {imageUrl && (
-                <div>
-                    {imageUrl?.map((url, index) => (
-                        <img key={index} src={url} alt={`processed image ${index}`} />
-                    ))}
-                </div>
-            )}
-            <Button
+            {/* {loading && <div>正在上传图片，请稍候...</div>} */}
+
+            {/* <Buttons
                 onClick={handleTest}>
                 test
-            </Button>
-
-            <div>
-                {imageDataList}
-                {imageDataList.map((imageData, index) => (
-                    <img key={index} src={imageData} alt={`image${index}`} />
-                ))}
-            </div>
-
+            </Buttons> */}
         </>
-
-
     )
 }
 
