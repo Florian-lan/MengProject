@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import './style.scss';
 import Card from "../../components/Card/Card";
 import UploadImg from "../../components/UploadImg/UploadImg";
+import PrimaryTag from '../../components/PrimaryTag/PrimaryTag'
+import CardTitle from "../../components/CardTittle/CardTitle";
 
 const Home = () => {
 
@@ -13,9 +15,12 @@ const Home = () => {
                 </div>
 
                 <div className="upload">
-                    <p className="header">
+                    <CardTitle
+                        title="Upload an Image You Want to Identify"
+                        description="Please upload an image you want to analysis" />
+                    {/* <p className="header">
                         Upload an Image You Want to Identify:
-                    </p>
+                    </p> */}
                     <UploadImg />
                 </div>
 
