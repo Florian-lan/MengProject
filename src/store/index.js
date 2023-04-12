@@ -1,11 +1,11 @@
 import { legacy_createStore as createStore } from 'redux';
 import { combineReducers, applyMiddleware } from 'redux';
 import ImageReducer from './imageStore/reducer'
+import DescReducer from './descStore/reducer'
 
 const { ImageList } = ImageReducer;
-const initialMovieInfo = {
-    movieInfo: {}
-}
+const { DescList } = DescReducer;
+
 const initUserInfo = {
     user_name: '',
     password: ''
@@ -17,10 +17,12 @@ const initUserInfo = {
 const store = createStore(
     combineReducers({
         ImageList,
+        DescList
     }),
     // reduce函数的初始化state
     {
-        ImageList: []
+        ImageList: [],
+        DescList: []
     },
     // 在store中应用中间件
 )

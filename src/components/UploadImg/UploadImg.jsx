@@ -6,6 +6,7 @@ import ImgCrop from 'antd-img-crop';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setImageList } from "../../store/imageStore/action";
+import { setDescList } from "../../store/descStore/action";
 import JSZip from 'jszip';
 import pako from 'pako';
 
@@ -31,11 +32,15 @@ const UploadImg = () => {
         console.log(state.ImageList);
 
     })
+    const descList = useSelector(state => {
+        console.log(state.DescList);
+    })
     const dispatch = useDispatch();
 
     // Server API #TODO
     const SERVER_URL = 'http://localhost:8080'
     const UPLOAD_URL = `${SERVER_URL}/upload`
+    const DESC_URL = `${SERVER_URL}/desc`
 
     const onPreview = async (file) => {
         let src = file.url;
@@ -153,11 +158,25 @@ const UploadImg = () => {
         //     uploadInstance.upload();
         //     setLoading(true)
         // }
+        // get description info about result image
+        axios.get(DESC_URL)
+            .then(response => {
+                // setDescArray(response.data);
+                // TODO process data get from server
+                const desc = response.data;
+                dispatch(setDescList(desc))
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
             navigate('/result');
         }, 2000)
+
 
 
     }
