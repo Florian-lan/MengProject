@@ -31,7 +31,7 @@ public class GPTController {
      * @throws IOException
      */
     @GetMapping(value = "/desc")
-    public ResponseEntity<String[]> getText() throws IOException {
+    public ResponseEntity<List<String>> getText() throws IOException {
 
         // 上传图片
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
@@ -39,22 +39,16 @@ public class GPTController {
         // output ====== /Users/ndsjr/Documents/GitHub/MengProject/spring-boot-upload
         String filePath = pre + "/src/main/java/cn/czh0123/controller/pythonFile/Outputs/test.txt";
 
-        String[] lines = null;
+        List<String> readAllLines = null;
         try {
-            List<String> readAllLines = Files.readAllLines(Paths.get(filePath));
-            lines = new String[readAllLines.size()];
-            readAllLines.toArray(lines);
-            System.out.println(lines[0]);
+            readAllLines = Files.readAllLines(Paths.get(filePath));
+            System.out.println(readAllLines.get(0));
             System.out.println("Reading lines from get!");
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(lines, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        // HttpHeaders headers = new HttpHeaders();
-        // // headers.setContentType(MediaType.ALL);
-        // headers.setContentLength(lines.length);
-
-        return new ResponseEntity<>(lines, HttpStatus.OK);
+        return new ResponseEntity<>(readAllLines, HttpStatus.OK);
     }
 }
