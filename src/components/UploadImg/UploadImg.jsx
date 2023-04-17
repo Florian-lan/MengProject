@@ -37,6 +37,8 @@ const UploadImg = () => {
     })
     const dispatch = useDispatch();
 
+
+
     // Server API #TODO
     const SERVER_URL = 'http://localhost:8080'
     const UPLOAD_URL = `${SERVER_URL}/upload`
@@ -287,7 +289,10 @@ const UploadImg = () => {
     return (
         <>
 
-            <ImgCrop rotationSlider>
+            <ImgCrop
+                rotationSlider
+                modalTitle="Crop Your Image"
+            >
                 <Upload
                     name='uploadFile'
                     // action={UPLOAD_URL}

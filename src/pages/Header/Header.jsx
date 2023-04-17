@@ -3,7 +3,7 @@ import './style.scss';
 import { Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 
 
@@ -14,20 +14,27 @@ const { SubMenu } = Menu;
 const items = [
 
     {
-        label: 'Navigation Three - Submenu',
+        label: 'Related Info',
         key: 'SubMenu',
-        icon: <SettingOutlined />,
+        icon: <FileTextOutlined />,
         children: [
             {
                 type: 'group',
-                label: 'Item 1',
+                label: 'Related Docs',
                 children: [
                     {
-                        label: 'Option 1',
+                        label: (
+                            <a href="https://ieeexplore.ieee.org/document/8237336" target="_blank" rel="noopener noreferrer">
+                                Grad-CAM
+                            </a>),
                         key: 'setting:1',
                     },
                     {
-                        label: 'Option 2',
+                        label: (
+                            <a href="https://ieeexplore.ieee.org/document/8354201" target="_blank" rel="noopener noreferrer">
+                                Grad-CAM++
+                            </a>
+                        ),
                         key: 'setting:2',
                     },
                 ],
@@ -51,18 +58,19 @@ const items = [
     {
         label: (
             <a href="#TODO" target="_blank" rel="noopener noreferrer">
-                Related Docs
+                About us
             </a>
         ),
-        key: 'docs',
+        key: 'developer',
     },
 ];
 const Header = () => {
     const [current, setCurrent] = useState('SubMenu');
     const onClick = (e) => {
-        console.log('click ', e);
+        // console.log('click ', e);
         setCurrent(e.key);
     };
+
     return (
         <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
     )

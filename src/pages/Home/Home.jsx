@@ -6,6 +6,7 @@ import PrimaryTag from '../../components/PrimaryTag/PrimaryTag'
 import CardTitle from "../../components/CardTittle/CardTitle";
 
 const Home = () => {
+    
 
     return (
         <div className="home">
