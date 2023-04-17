@@ -3,6 +3,8 @@ package cn.czh0123.controller;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+
 import org.springframework.boot.system.ApplicationHome;
 
 import org.springframework.http.MediaType;
@@ -29,7 +31,7 @@ public class GPTController {
      * @throws IOException
      */
     @GetMapping(value = "/desc")
-    public ResponseEntity<String[]> getImg() throws IOException {
+    public ResponseEntity<String[]> getText() throws IOException {
 
         // 上传图片
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
@@ -37,24 +39,22 @@ public class GPTController {
         // output ====== /Users/ndsjr/Documents/GitHub/MengProject/spring-boot-upload
         String filePath = pre + "/src/main/java/cn/czh0123/controller/pythonFile/Outputs/test.txt";
 
-
-        File file = new File(filePath);
-        if (!file.exists()) {
-            throw new FileNotFoundException("Image not found");
-        }
-
         String[] lines = null;
         try {
-            lines = Files.readAllLines(Paths.get(filePath)).toArray(new String[0]);
+            List<String> readAllLines = Files.readAllLines(Paths.get(filePath));
+            lines = new String[readAllLines.size()];
+            readAllLines.toArray(lines);
+            System.out.println(lines[0]);
             System.out.println("Reading lines from get!");
         } catch (IOException e) {
             e.printStackTrace();
+            return new ResponseEntity<>(lines, HttpStatus.BAD_REQUEST);
         }
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.ALL);
-        headers.setContentLength(lines.length);
 
-        return new ResponseEntity<>(lines, headers, HttpStatus.OK);
+        // HttpHeaders headers = new HttpHeaders();
+        // // headers.setContentType(MediaType.ALL);
+        // headers.setContentLength(lines.length);
+
+        return new ResponseEntity<>(lines, HttpStatus.OK);
     }
 }
