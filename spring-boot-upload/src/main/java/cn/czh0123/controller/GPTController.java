@@ -26,10 +26,7 @@ import java.nio.file.Files;
 @RequestMapping
 @CrossOrigin
 public class GPTController {
-    /**
-     * @return
-     * @throws IOException
-     */
+
     @GetMapping(value = "/desc")
     public ResponseEntity<List<String>> getText() throws IOException {
 
@@ -50,5 +47,12 @@ public class GPTController {
         }
 
         return new ResponseEntity<>(readAllLines, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/chat")
+    public ResponseEntity<String> chat(@RequestBody String inputQuestion) throws IOException {
+   
+        inputQuestion = "The answer to question: " + inputQuestion + " is 1";
+        return new ResponseEntity<>(inputQuestion, HttpStatus.OK);
     }
 }
