@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Layout, Input, Button, List } from "antd";
+import ConfirmBtn from "../ConfirmBtn/ConfirmBtn";
 import axios from "axios";
 // import "antd/dist/antd.css";
+import './style.scss'
 
 const { Header, Content, Footer } = Layout;
 
@@ -33,6 +35,13 @@ const ChatBox = () => {
                     };
                     setMessages([...messages, newMessage]);
                 } catch (error) {
+                    // TODO: only for dev
+                    const newMessage = {
+                        id: messages.length + 1,
+                        text: 'bot',
+                        sender: "bot",
+                    };
+                    setMessages([...messages, newMessage]);
                     console.error(error);
                 }
                 setLoading(false);
@@ -91,10 +100,10 @@ const ChatBox = () => {
     };
 
     return (
-        <Layout style={{ minHeight: "100vh" }}>
-            <Header style={{ background: "#fff", padding: 0 }}>ChatGPT</Header>
-            <Content style={{ padding: "0 50px" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+        <Layout className="layout" >
+            <Header className="header" >ChatGPT</Header>
+            <Content className="content">
+                <div className="messages">
                     {console.log(messages)}
                     {messages.map((message) => {
                         console.log(message);
@@ -107,14 +116,11 @@ const ChatBox = () => {
                                 }}
                             >
                                 <div
+                                    className="message"
                                     style={{
                                         backgroundColor: message.sender === "user" ? "#1890ff" : "#f0f0f0",
                                         color: message.sender === "user" ? "#fff" : "#000",
-                                        padding: "10px",
-                                        borderRadius: "10px",
-                                        margin: "10px",
-                                        maxWidth: "70%",
-                                        wordBreak: "break-word",
+
                                     }}
                                 >
                                     {message.text}
@@ -125,19 +131,31 @@ const ChatBox = () => {
                     )}
                 </div>
             </Content>
-            <Footer style={{ background: "#fff", padding: "10px 50px" }}>
+            <Footer className="footer">
                 <Input
+                    className="chat-input"
                     value={inputValue}
                     onChange={handleInputChange}
                     type="text"
                     // ref={inputRef}
                     onKeyDown={handleKeyDown}
                     placeholder="Enter your message"
-                    style={{ marginRight: 10 }}
+
+                    suffix={
+
+                        <ConfirmBtn
+                            className="input-button"
+                            type="primary"
+                            onClick={handleSendMessage}
+
+                            loading={loading}
+                            // loading={true}
+                            text="Send"
+                        >
+                        </ConfirmBtn>
+                    }
                 />
-                <Button type="primary" onClick={handleSendMessage}>
-                    Send
-                </Button>
+
             </Footer>
         </Layout>
     );
