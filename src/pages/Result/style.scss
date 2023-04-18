@@ -1,0 +1,12 @@
+.resBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 150px;
+    padding-right: 100px;
+
+    .chat {
+        width: 300px;
+
+    }
+}
