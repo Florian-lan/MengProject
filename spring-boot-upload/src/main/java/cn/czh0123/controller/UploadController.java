@@ -103,33 +103,33 @@ public class UploadController {
         // 上传图片
         ApplicationHome applicationHome = new ApplicationHome(this.getClass());
         String pre = applicationHome.getDir().getParentFile().getParentFile().getAbsolutePath();
-        System.out.println(pre);
+        // System.out.println(pre);
 
-        System.out.println(originalFilename);
+        System.out.println("info1: "+originalFilename);
         String path = pre + "/src/main/resources/static/images/test1.jpeg";
         try {
             file.transferTo(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
-//
-//        // 执行python文件
-//        // String command = "python3 " + pre +
-//        // "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
-//        String command = "/opt/anaconda3/bin/python " + pre
-//                + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
-//        System.out.println(command);
-//
-//        Process process = Runtime.getRuntime().exec(command);
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//        String line;
-//        ArrayList<String> arrayString = new ArrayList<>();
-//        while ((line = reader.readLine()) != null) {
-//            arrayString.add(line);
-//            System.out.println(line);
-//        }
-//
-//        System.out.println("=======================");
+
+        // 执行python文件
+        // String command = "python3 " + pre +
+        // "/src/main/java/cn/czh0123/controller/pythonFile/test1.py";
+        String command = "/opt/anaconda3/bin/python " + pre
+                + "/src/main/java/cn/czh0123/controller/pythonFile/GradCAM.py";
+        System.out.println(command);
+
+        Process process = Runtime.getRuntime().exec(command);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        ArrayList<String> arrayString = new ArrayList<>();
+        while ((line = reader.readLine()) != null) {
+            arrayString.add(line);
+            System.out.println(line);
+        }
+
+        System.out.println("=======================");
         // String classification = arrayString.get(3);
 
         // 返回处理后的图片 多张
