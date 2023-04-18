@@ -147,7 +147,7 @@ public class UploadController {
         // ======= ***** where you put your prompt for chatGPT that initializes chat.txt
         try {
             FileWriter myWriter = new FileWriter(txtPath + "chat.txt");
-            myWriter.write("You are an AI research assistant. You use a tone that is technical and scientific.\n");
+            myWriter.write("You are an AI research assistant. You use a tone that is technical and scientific. All your response should be in the same line.\n");
             myWriter.close();
             System.out.println("chat txt file initilization succeed ");
         } catch (IOException e) {
