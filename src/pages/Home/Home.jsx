@@ -4,9 +4,10 @@ import Card from "../../components/Card/Card";
 import UploadImg from "../../components/UploadImg/UploadImg";
 import PrimaryTag from '../../components/PrimaryTag/PrimaryTag'
 import CardTitle from "../../components/CardTittle/CardTitle";
+import ChatBox from "../../components/ChatBox/ChatBox";
 
 const Home = () => {
-    
+
 
     return (
         <div className="home">
@@ -26,6 +27,9 @@ const Home = () => {
                 </div>
 
 
+            </div>
+            <div className="chat">
+                <ChatBox />
             </div>
         </div>
 
