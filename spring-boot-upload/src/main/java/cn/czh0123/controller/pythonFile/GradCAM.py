@@ -210,14 +210,19 @@ model = load_model(model_path)
 print('hello_python')
 
 
-root_path = current_directory + '/spring-boot-upload/src/main/java/cn/czh0123/controller/pythonFile'
+# root_path = current_directory + '/spring-boot-upload/src/main/java/cn/czh0123/controller/pythonFile'
+root_path = current_directory + '/spring-boot-upload/src/main/resources/static'
 
 print(root_path)
 
 # img_path = 'image file path /xxxx.png'
 
 # 1. ========= 先不改
-img_path = '/Users/ndsjr/Downloads/Image Identification & Feature Visualization/Dataset1/PS/25 PS 3.1_10_7 37.png'
+# img_path = '/Users/ndsjr/Downloads/Image Identification & Feature Visualization/Dataset1/PS/25 PS 3.1_10_7 37.png'
+# /spring-boot-upload/src/main/resources/static/images/test1.jpeg
+img_path = current_directory + \
+    '/spring-boot-upload/src/main/resources/static/images/test1.jpeg'
+# img_path = '/Users/ndsjr/Downloads/Image Identification & Feature Visualization/Dataset1/PS/25 PS 3.1_10_7 37.png'
 
 
 img = preprocess_image(img_path)
@@ -228,12 +233,12 @@ heatmap = grad_cam(model, img,
 
 
 save_imgwithheat(img_path, heatmap,
-                 saved_path=root_path + '/Outputs/GCAM_imgwithheat.jpg')
+                 saved_path=root_path + '/images/GCAM_imgwithheat.jpg')
 
 heatmap_plus = grad_cam_plus(model, img)
 # show_imgwithheat(img_path, heatmap_plus)
 save_imgwithheat(img_path, heatmap,
-                 saved_path=root_path + '/Outputs/GCAM++_imgwithheat.jpg')
+                 saved_path=root_path + '/images/GCAM++_imgwithheat.jpg')
 
 
 heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
@@ -243,7 +248,7 @@ heatmap = np.clip(heatmap, 0, 255).astype("uint8")
 heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
 heatmap = Image.fromarray(heatmap)
 
-heatmap.save(root_path + '/Outputs/GCAM_heat.jpg')
+heatmap.save(root_path + '/images/GCAM_heat.jpg')
 # display(heatmap)
 # plt.imshow(heatmap)
 # plt.show()
@@ -256,7 +261,7 @@ heatmap_plus = np.clip(heatmap_plus, 0, 255).astype("uint8")
 heatmap_plus = cv2.cvtColor(heatmap_plus, cv2.COLOR_BGR2RGB)
 heatmap_plus = Image.fromarray(heatmap_plus)
 
-heatmap_plus.save(root_path + '/Outputs/GCAM++_heat.jpg')
+heatmap_plus.save(root_path + '/images/GCAM++_heat.jpg')
 
 # display(heatmap_plus)
 # plt.imshow(heatmap_plus)
@@ -265,8 +270,9 @@ heatmap_plus.save(root_path + '/Outputs/GCAM++_heat.jpg')
 
 # img1, img2 = Image.open(
 #     "./Outputs/GCAM_imgwithheat.jpg"), Image.open("./Outputs/GCAM++_imgwithheat.jpg")
-img1, img2 = Image.open(root_path + '/Outputs/GCAM_heat.jpg'), Image.open(root_path + '/Outputs/GCAM++_heat.jpg')
+img1, img2 = Image.open(
+    root_path + '/images/GCAM_heat.jpg'), Image.open(root_path + '/images/GCAM++_heat.jpg')
 diff = ImageChops.difference(img1, img2)
 
-diff.save(root_path + '/Outputs/Difference.jpg')
+diff.save(root_path + '/images/Difference.jpg')
 print("finished")
