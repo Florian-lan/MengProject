@@ -1,19 +1,24 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { Layout, Input, Button, List } from "antd";
+import axios from "axios";
 // import "antd/dist/antd.css";
 
 const { Header, Content, Footer } = Layout;
 
+const SERVER_URL = 'http://localhost:8080'
+const CHAT_URL = `${SERVER_URL}/chat`
+
 const ChatBox = () => {
     const [messages, setMessages] = useState([]);
     const [inputValue, setInputValue] = useState("");
+    const [loading, setLoading] = useState(false);
     // const inputRef = useRef(null);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         // console.log(inputRef.current.input);
         // const inputValue = inputRef.current.input.value?.trim();
         const sent = inputValue;
@@ -25,13 +30,22 @@ const ChatBox = () => {
             };
             console.log(newMessage)
             setMessages([...messages, newMessage]);
+
             // inputRef.current.input.value = "";
             // console.log(inputRef.current)
             // inputRef.current.focus();
             console.log(messages);
             setInputValue("");
             // 模拟ChatGPT返回的回答
-            handleReceiveMessage("这是ChatGPT返回的回答。" + sent);
+            setLoading(true);
+            let response = null;
+            try {
+                response = await axios.post(CHAT_URL, { message: sent });
+            } catch (error) {
+                console.error(error);
+            }
+            setLoading(false);
+            handleReceiveMessage("这是ChatGPT返回的回答。" + response);
         }
     };
 
