@@ -30,7 +30,7 @@ const ChatBox = () => {
                     });
                     const newMessage = {
                         id: messages.length + 1,
-                        text: response.data.message,
+                        text: response.data,
                         sender: "bot",
                     };
                     setMessages([...messages, newMessage]);
