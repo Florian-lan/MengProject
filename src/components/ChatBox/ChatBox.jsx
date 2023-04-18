@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Layout, Input, Button, List } from "antd";
 import axios from "axios";
 // import "antd/dist/antd.css";
@@ -18,6 +18,30 @@ const ChatBox = () => {
         setInputValue(event.target.value);
     };
 
+    useEffect(() => {
+        const getLastMessage = async () => {
+            if (messages.length > 0 && messages[messages.length - 1].sender === "user") {
+                setLoading(true);
+                try {
+                    const response = await axios.post(CHAT_URL, {
+                        message: messages[messages.length - 1].text,
+                    });
+                    const newMessage = {
+                        id: messages.length + 1,
+                        text: response.data.message,
+                        sender: "bot",
+                    };
+                    setMessages([...messages, newMessage]);
+                } catch (error) {
+                    console.error(error);
+                }
+                setLoading(false);
+                // inputRef.current.setState({ value: "" });
+                setInputValue("");
+            }
+        };
+        getLastMessage();
+    }, [messages])
     const handleSendMessage = async () => {
         // console.log(inputRef.current.input);
         // const inputValue = inputRef.current.input.value?.trim();
@@ -30,22 +54,23 @@ const ChatBox = () => {
             };
             console.log(newMessage)
             setMessages([...messages, newMessage]);
-
             // inputRef.current.input.value = "";
             // console.log(inputRef.current)
             // inputRef.current.focus();
             console.log(messages);
             setInputValue("");
-            // 模拟ChatGPT返回的回答
-            setLoading(true);
-            let response = null;
-            try {
-                response = await axios.post(CHAT_URL, { message: sent });
-            } catch (error) {
-                console.error(error);
-            }
-            setLoading(false);
-            handleReceiveMessage("这是ChatGPT返回的回答。" + response);
+            // // 模拟ChatGPT返回的回答
+            // setLoading(true);
+            // let response = null;
+            // try {
+            //     response = await axios.post(CHAT_URL, { message: sent });
+            //     // setLoading(false);
+            //     // handleReceiveMessage("这是ChatGPT返回的回答。" + response);
+            // } catch (error) {
+            //     console.error(error);
+            // }
+            // setLoading(false);
+            // handleReceiveMessage("这是ChatGPT返回的回答。" + response);
         }
     };
 
@@ -55,6 +80,7 @@ const ChatBox = () => {
             text,
             sender: "bot",
         };
+        console.log(messages);
         setMessages([...messages, newMessage]);
     };
 
@@ -68,7 +94,7 @@ const ChatBox = () => {
         <Layout style={{ minHeight: "100vh" }}>
             <Header style={{ background: "#fff", padding: 0 }}>ChatGPT</Header>
             <Content style={{ padding: "0 50px" }}>
-                <div style={{ display: "flex", flexDirection: "column-reverse" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                     {console.log(messages)}
                     {messages.map((message) => {
                         console.log(message);
