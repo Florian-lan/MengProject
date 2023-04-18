@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 @RestController
@@ -130,14 +130,40 @@ public class UploadController {
         }
 
         System.out.println("=======================");
-        // String classification = arrayString.get(3);
 
+        // Save classification result to txt
+        String classification = arrayString.get(3);
+        String txtPath = pre + "/src/main/resources/";
+        try {
+            FileWriter myWriter = new FileWriter(txtPath + "clfResult.txt");
+            myWriter.write(classification);
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+
+        // ======= ***** where you put your prompt for chatGPT that initializes chat.txt
+        try {
+            FileWriter myWriter = new FileWriter(txtPath + "chat.txt");
+            myWriter.write("You are an AI research assistant. You use a tone that is technical and scientific.\n");
+            myWriter.close();
+            System.out.println("chat txt file initilization succeed ");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        
         // 返回处理后的图片 多张
         // Add more images to the ArrayList
         // !!!!!!!!!!!!! 注意 这两个文件名字不能相同！！！！！！！！！！！！！！！
         ArrayList<File> filesList = new ArrayList<File>();
-        String filePath1 = pre + "/src/main/resources/static/images/test1.jpeg";
-        String filePath2 = pre + "/src/main/resources/static/images/test2.jpeg";
+        String filePath1 = pre + "/src/main/resources/static/images/GCAM_imgwithheat.jpg";
+        String filePath2 = pre + "/src/main/resources/static/images/GCAM++_imgwithheat.jpg";
+
+        // String filePath1 = pre + "/src/main/resources/static/images/test1.jpeg";
+        // String filePath2 = pre + "/src/main/resources/static/images/test2.jpeg";
 
         File newFile1 = new File(filePath1);
         File newFile2 = new File(filePath2);
