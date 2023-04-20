@@ -118,8 +118,8 @@ const ChatBox = () => {
                                 <div
                                     className="message"
                                     style={{
-                                        backgroundColor: message.sender === "user" ? "#1890ff" : "#f0f0f0",
-                                        color: message.sender === "user" ? "#fff" : "#000",
+                                        backgroundColor: message.sender === "user" ? "#ffe7ba" : "#f0f0f0",
+                                        color: message.sender === "user" ? "#000" : "#000",
 
                                     }}
                                 >
