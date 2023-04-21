@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Layout, Input, Button, List } from "antd";
 import ConfirmBtn from "../ConfirmBtn/ConfirmBtn";
 import axios from "axios";
+import { CommentOutlined } from '@ant-design/icons';
 // import "antd/dist/antd.css";
 import './style.scss'
 
@@ -101,7 +102,9 @@ const ChatBox = () => {
 
     return (
         <Layout className="layout" >
-            <Header className="header" >ChatGPT</Header>
+            <Header className="header" >
+                <CommentOutlined />
+                ChatGPT</Header>
             <Content className="content">
                 <div className="messages">
                     {console.log(messages)}
