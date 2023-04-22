@@ -169,10 +169,9 @@ const UploadImg = () => {
                 dispatch(setDescList(desc))
             })
             .catch(error => {
+                dispatch(setDescList("it is a test"))
                 console.error(error);
             });
-
-
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
@@ -318,7 +317,7 @@ const UploadImg = () => {
                 onClick={handleUploadClick}
                 disabled={fileList.length === 0}
                 loading={loading}
-                style={{ marginTop: 16 }}
+                style={{ marginTop: 16, marginRight: 200 }}
             >
 
                 {loading ? 'Processing...' : 'Process Image'}

@@ -5,6 +5,7 @@ import axios from "axios";
 import { CommentOutlined } from '@ant-design/icons';
 // import "antd/dist/antd.css";
 import './style.scss'
+import DynamicText from "../DynamicText/DynamicText";
 
 const { Header, Content, Footer } = Layout;
 
@@ -39,7 +40,7 @@ const ChatBox = () => {
                     // TODO: only for dev
                     const newMessage = {
                         id: messages.length + 1,
-                        text: 'bot',
+                        text: 'Itt is a message from robot',
                         sender: "bot",
                     };
                     setMessages([...messages, newMessage]);
@@ -126,7 +127,7 @@ const ChatBox = () => {
 
                                     }}
                                 >
-                                    {message.text}
+                                    {message.sender === "user" ? message.text : <DynamicText desc={message.text} />}
                                 </div>
                             </div>
                         )
