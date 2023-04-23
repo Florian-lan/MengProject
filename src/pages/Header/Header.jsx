@@ -72,7 +72,20 @@ const Header = () => {
     };
 
     return (
-        <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+        <div className="headerLZ">
+            <div className="logo">
+                <a className="logoLink" href="#">
+                    {/* <p className="bg"></p> */}
+                    {/* <img src='/image/logo_Desktop.svg' alt='homepage' width="121" height="31" /> */}
+                    <img className="logoImg" src='/logo3.jpg' alt='homepage' width="60" height="50" />
+                </a>
+            </div>
+            <div className="func">
+                <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
+
+            </div>
+        </div>
+
     )
 
 };

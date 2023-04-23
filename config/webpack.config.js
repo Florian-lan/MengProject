@@ -121,7 +121,7 @@ module.exports = {
             ),
         }),
         new HtmlWebpackPlugin({
-            title: 'Classify',
+            title: 'LZ-Classify',
             // favicon: "./public/favicon.ico",
             // filename: "index.html",
             // manifest: "./public/manifest.json",
