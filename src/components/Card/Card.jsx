@@ -5,26 +5,36 @@ import "./style.scss";
 const Card = () => {
     return (
         <>
-            <Carousel effect="fade" slide='false' fade='false'>
+            <Carousel effect="fade" slide='false' fade='false' autoplay>
                 <div>
                     <h3 className="carousel-content">
-                        <img src="https://github.com/Florian-lan/MengProject/blob/main/public/images/quan2.JPG" alt="" />
+                        <img src="images/carousel1.jpg" alt="" />
                     </h3>
 
 
-                </div>
-                <div>
-                    <h3 className="carousel-content">1</h3>
+
 
                 </div>
                 <div>
-                    <h3 className="carousel-content">1</h3>
+                    <h3 className="carousel-content">
+                        <img src="images/carousel2.jpg" alt="" />
+                    </h3>
+
                 </div>
                 <div>
-                    <h3 className="carousel-content">1</h3>
+                    <h3 className="carousel-content">
+                        <img src="images/carousel3.jpg" alt="" />
+                    </h3>
+                </div>
+                <div>
+                    <h3 className="carousel-content">
+                        <img src="images/carousel4.jpg" alt="" />
+                    </h3>
                 </div>
             </Carousel>
+
         </>
+
     )
 
 }

@@ -2,8 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { Layout, Input, Button, List } from "antd";
 import ConfirmBtn from "../ConfirmBtn/ConfirmBtn";
 import axios from "axios";
+import { CommentOutlined } from '@ant-design/icons';
 // import "antd/dist/antd.css";
 import './style.scss'
+import DynamicText from "../DynamicText/DynamicText";
 
 const { Header, Content, Footer } = Layout;
 
@@ -38,7 +40,7 @@ const ChatBox = () => {
                     // TODO: only for dev
                     const newMessage = {
                         id: messages.length + 1,
-                        text: 'bot',
+                        text: 'Itt is a message from robot',
                         sender: "bot",
                     };
                     setMessages([...messages, newMessage]);
@@ -101,7 +103,9 @@ const ChatBox = () => {
 
     return (
         <Layout className="layout" >
-            <Header className="header" >ChatGPT</Header>
+            <Header className="header" >
+                <CommentOutlined />
+                ChatGPT</Header>
             <Content className="content">
                 <div className="messages">
                     {console.log(messages)}
@@ -118,12 +122,12 @@ const ChatBox = () => {
                                 <div
                                     className="message"
                                     style={{
-                                        backgroundColor: message.sender === "user" ? "#1890ff" : "#f0f0f0",
-                                        color: message.sender === "user" ? "#fff" : "#000",
+                                        backgroundColor: message.sender === "user" ? "#ffe7ba" : "#f0f0f0",
+                                        color: message.sender === "user" ? "#000" : "#000",
 
                                     }}
                                 >
-                                    {message.text}
+                                    {message.sender === "user" ? message.text : <DynamicText desc={message.text} />}
                                 </div>
                             </div>
                         )
